@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    container_name: interview
+    image: node:15.5.0-alpine3.12
+    command: sh -c "npm i && npm start"
+    env_file:
+      - ./.env
+    ports:
+      - 3000:3000
+    working_dir: /app
+    volumes:
+      - ./:/app
+    links:
+      - postgres
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+volumes:
+  postgres-data:
+    driver: local
